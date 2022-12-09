@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Button,
 } from "react-native";
 
 export default function RegScreen() {
@@ -33,34 +34,52 @@ export default function RegScreen() {
             <View
               style={{
                 ...styles.form,
-                marginBottom: isShowKeyboard ? 20 : 150,
+                marginBottom: isShowKeyboard ? 0 : 0,
               }}
             >
+              <View style={styles.avatar}></View>
+
               <Text style={styles.title}>Реєстрація</Text>
               <View>
-                <Text style={styles.inputTitle}>EMAIL ADDRES</Text>
                 <TextInput
                   style={styles.input}
-                  textAlign={"center"}
                   onFocus={() => setIsShowKeyboard(true)}
+                  placeholder={"Логін"}
+                  placeholderTextColor={"#BDBDBD"}
                 />
               </View>
-              <View style={{ marginTop: 20 }}>
-                <Text style={styles.inputTitle}>PASSWORD</Text>
+              <View>
                 <TextInput
                   style={styles.input}
-                  textAlign={"center"}
+                  secureTextEntry={false}
+                  onFocus={() => setIsShowKeyboard(true)}
+                  placeholder={"Електронна адреса"}
+                  placeholderTextColor={"#BDBDBD"}
+                />
+              </View>
+              <View>
+                <TextInput
+                  style={styles.input}
                   secureTextEntry={true}
                   onFocus={() => setIsShowKeyboard(true)}
+                  placeholder={"Пароль"}
+                  placeholderTextColor={"#BDBDBD"}
                 />
               </View>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={styles.btn}
-                onPress={keyboardHide}
-              >
-                <Text style={styles.btnTitle}>SIGN IN</Text>
-              </TouchableOpacity>
+              <View style={styles.regWrapper}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.btn}
+                  onPress={keyboardHide}
+                >
+                  <Text style={styles.btnTitle}>Зареєструватися</Text>
+                </TouchableOpacity>
+                <View style={styles.loginWrapper}>
+                  <Text style={styles.loginText}>Вже маєте аккаунт?</Text>
+                  <Text style={styles.loginText}>Увійти</Text>
+                </View>
+              </View>
+              <Text style={styles.textShow}>Показати</Text>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -83,52 +102,76 @@ export const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#f0f8ff",
-    height: 40,
-    borderRadius: 6,
-
-    color: "#f0f8ff",
+    borderColor: "#E8E8E8",
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: "#F6F6F6",
+    marginBottom: 16,
+    paddingLeft: 16,
   },
   form: {
     backgroundColor: "#FFFFFF",
     borderRadius: 25,
-      justifyContent: "center",
+    justifyContent: "center",
     paddingTop: 92,
-  },
-  inputTitle: {
-    color: "#f0f8ff",
-    marginBottom: 10,
-    fontSize: 18,
+    paddingBottom: 78,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
   btn: {
-    borderRadius: 6,
-    borderWidth: 1,
-    height: 40,
-    marginTop: 40,
-    justifyContent: "center",
+    backgroundColor: "#FF6C00",
     alignItems: "center",
-    marginHorizontal: 20,
-    ...Platform.select({
-      ios: {
-        backgroundColor: "transparent",
-        borderColor: "#f0f8ff",
-      },
-      android: {
-        backgroundColor: "#4169e1",
-        borderColor: "transparent",
-      },
-    }),
+    height: 51,
+    justifyContent: "center",
+    borderRadius: 100,
+    marginTop: 43,
+    marginBottom: 16,
   },
   btnTitle: {
-    color: Platform.OS === "ios" ? "#4169e1" : "#f0f8ff",
-    fontSize: 18,
+    color: "#FFFFFF",
   },
   title: {
-fontWeight: 500,
-fontSize: 30,
-lineHeight: 35,
-textAlign: "center",
-letterSpacing: 0.01,
-color: "#212121",
+    fontSize: 30,
+    textAlign: "center",
+    color: "#212121",
+    marginBottom: 33,
+  },
+  wrapper: {
+    // fontSize: 30,
+    // textAlign: "center",
+    // color: "#212121",
+    // marginBottom: 33,
+  },
+  regWrapper: {
+    // fontSize: 30,
+    // textAlign: "center",
+    // color: "#212121",
+    // marginBottom: 33,
+  },
+  loginWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loginText: {
+    color: "#1B4371",
+    marginRight: 6,
+    fontSize: 16,
+  },
+  textShow: {
+    position: "absolute",
+    color: "#1B4371",
+    marginRight: 6,
+    fontSize: 16,
+    bottom: 239,
+    right: 25,
+  },
+    avatar: {
+        position: "absolute",
+        top: -55,
+        right: 140,
+      backgroundColor: "#F6F6F6",
+      width: 120,
+      height: 120,
   },
 });
