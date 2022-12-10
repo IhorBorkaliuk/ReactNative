@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,20 +10,30 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
-  Image,
-  Button,
 } from "react-native";
 
 
+
+
 export default function LogScreen() {
-        const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-        const [isOnFocusLogin, setIsOnFocusLogin] = useState(false);
-        const [isOnFocusEmail, setIsOnFocusEmail] = useState(false);
-        const [isOnFocusPW, setIsOnFocusPW] = useState(false);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isOnFocusEmail, setIsOnFocusEmail] = useState(false);
+  const [isOnFocusPW, setIsOnFocusPW] = useState(false);
+
+  
+  
+  const initialeState = {
+    email: '',
+    password: '',
+  }
+
+  const [state, setState] = useState(initialeState)
 
         const keyboardHide = () => {
           setIsShowKeyboard(false);
           Keyboard.dismiss();
+          console.log(state)
+          setState(initialeState);
         };
 
         return (
@@ -62,6 +72,14 @@ export default function LogScreen() {
                         onBlur={() => setIsOnFocusEmail(false)}
                         placeholder={"Електронна пошта"}
                         placeholderTextColor={"#BDBDBD"}
+                        onChangeText={(value) =>
+                          setState((prevState) => ({
+                            ...prevState,
+                            email: value,
+                          }))
+                        }
+                        keyboardType={"email-address"}
+                        value={state.email}
                       />
                     </View>
                     <View>
@@ -80,6 +98,13 @@ export default function LogScreen() {
                         onBlur={() => setIsOnFocusPW(false)}
                         placeholder={"Пароль"}
                         placeholderTextColor={"#BDBDBD"}
+                        onChangeText={(value) =>
+                          setState((prevState) => ({
+                            ...prevState,
+                            password: value,
+                          }))
+                        }
+                        value={state.password}
                       />
                     </View>
                     <Text

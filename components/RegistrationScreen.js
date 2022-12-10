@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,8 +11,8 @@ import {
   Keyboard,
     TouchableWithoutFeedback,
   Image,
-  Button,
 } from "react-native";
+
 
 export default function RegScreen() {
     const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -21,9 +21,22 @@ export default function RegScreen() {
     const [isOnFocusPW, setIsOnFocusPW] = useState(false);
 
 
+  
+  const initialeState = {
+    login: '',
+    email: '',
+    password: '',
+
+  }
+
+  const [state, setState] = useState(initialeState)
+
+
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
+    console.log(state)
+    setState(initialeState)
     };
 
 
@@ -65,6 +78,10 @@ export default function RegScreen() {
                   onBlur={() => setIsOnFocusLogin(false)}
                   placeholder={"Логін"}
                   placeholderTextColor={"#BDBDBD"}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, login: value }))
+                  }
+                  value={state.login}
                 />
               </View>
               <View>
@@ -83,6 +100,11 @@ export default function RegScreen() {
                   onBlur={() => setIsOnFocusEmail(false)}
                   placeholder={"Електронна пошта"}
                   placeholderTextColor={"#BDBDBD"}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, email: value }))
+                  }
+                  keyboardType={"email-address"}
+                  value={state.email}
                 />
               </View>
               <View>
@@ -101,6 +123,13 @@ export default function RegScreen() {
                   onBlur={() => setIsOnFocusPW(false)}
                   placeholder={"Пароль"}
                   placeholderTextColor={"#BDBDBD"}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({
+                      ...prevState,
+                      password: value,
+                    }))
+                  }
+                  value={state.password}
                 />
               </View>
               <View
@@ -118,7 +147,12 @@ export default function RegScreen() {
                 </TouchableOpacity>
                 <Text style={styles.loginText}>Вже маєте аккаунт? Увійти</Text>
               </View>
-              <Text style={{ ...styles.textShow, bottom: isShowKeyboard ? 64 : 239 }}>
+              <Text
+                style={{
+                  ...styles.textShow,
+                  bottom: isShowKeyboard ? 64 : 239,
+                }}
+              >
                 Показати
               </Text>
             </View>
@@ -173,6 +207,7 @@ export const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   title: {
+    fontFamily: "roboto-regular",
     fontSize: 30,
     textAlign: "center",
     color: "#212121",
@@ -212,3 +247,5 @@ export const styles = StyleSheet.create({
     right: 129,
   },
 });
+
+
