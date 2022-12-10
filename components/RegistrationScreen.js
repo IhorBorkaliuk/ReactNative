@@ -183,6 +183,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     marginBottom: 16,
     paddingLeft: 16,
+    fontFamily: "Roboto-Bold",
   },
   form: {
     backgroundColor: "#FFFFFF",
@@ -193,6 +194,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 78,
     paddingLeft: 16,
     paddingRight: 16,
+    fontFamily: "Roboto-Bold",
   },
   btn: {
     backgroundColor: "#FF6C00",
@@ -204,10 +206,12 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
   },
   btnTitle: {
+    fontFamily: "Roboto-Bold",
     color: "#FFFFFF",
+    fontSize: 16,
   },
   title: {
-    fontFamily: "roboto-regular",
+    fontFamily: "Roboto-Bold",
     fontSize: 30,
     textAlign: "center",
     color: "#212121",
@@ -220,12 +224,14 @@ export const styles = StyleSheet.create({
     // marginBottom: 33,
   },
   loginText: {
+    fontFamily: "Roboto-Bold",
     textAlign: "center",
     color: "#1B4371",
     marginRight: 6,
     fontSize: 16,
   },
   textShow: {
+    fontFamily: "Roboto-Bold",
     position: "absolute",
     color: "#1B4371",
     marginRight: 6,

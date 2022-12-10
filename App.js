@@ -19,7 +19,11 @@ export default function App() {
 const [isReady, setIsReady] = useState(false);
 if (!isReady) {
   return (
-    <AppLoading startAsync={loadFonts} onFinish={() => setIsReady(true)} />
+    <AppLoading
+      startAsync={loadFonts}
+      onFinish={() => setIsReady(true)}
+      onError={console.warn}
+    />
   );
 }
   return (
