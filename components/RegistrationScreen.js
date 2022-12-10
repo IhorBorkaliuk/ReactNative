@@ -150,9 +150,6 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     paddingLeft: 16,
   },
-  inputFocus: {
-    borderColor: "#FF6C00",
-  },
   form: {
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
@@ -181,22 +178,11 @@ export const styles = StyleSheet.create({
     color: "#212121",
     marginBottom: 33,
   },
-  wrapper: {
-    // fontSize: 30,
-    // textAlign: "center",
-    // color: "#212121",
-    // marginBottom: 33,
-  },
   regWrapper: {
     // fontSize: 30,
     // textAlign: "center",
     // color: "#212121",
     // marginBottom: 33,
-  },
-  loginWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
   },
   loginText: {
     textAlign: "center",
