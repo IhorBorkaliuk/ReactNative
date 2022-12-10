@@ -5,26 +5,23 @@ import { styles } from './components/RegistrationScreen';
 import { useState } from 'react';
 
 import * as Font from "expo-font";
-import AppLoading from "expo";
+import AppLoading from 'expo-app-loading';
 
 
-const fonts = () =>
-  Font.loadAsync({
-    "roboto-regular": require("./assets/fonts/Roboto-Regular.ttf"),
-    "roboto-bold": require("./assets/fonts/Roboto-Bold.ttf"),
+const loadFonts = async () => {
+  await Font.loadAsync({
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
   });
+};
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
-
-  if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={fonts}
-        onFinish={() => setIsReady(true)}
-      />
-    );
-  }
+const [isReady, setIsReady] = useState(false);
+if (!isReady) {
+  return (
+    <AppLoading startAsync={loadFonts} onFinish={() => setIsReady(true)} />
+  );
+}
   return (
     <View style={styles.container}>
       <RegScreen />
