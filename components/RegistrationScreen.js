@@ -9,17 +9,23 @@ import {
   Platform,
   KeyboardAvoidingView,
   Keyboard,
-  TouchableWithoutFeedback,
+    TouchableWithoutFeedback,
+  Image,
   Button,
 } from "react-native";
 
 export default function RegScreen() {
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+    const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+    const [isOnFocusLogin, setIsOnFocusLogin] = useState(false);
+    const [isOnFocusEmail, setIsOnFocusEmail] = useState(false);
+    const [isOnFocusPW, setIsOnFocusPW] = useState(false);
+
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-  };
+    };
+
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
@@ -35,38 +41,74 @@ export default function RegScreen() {
               style={{
                 ...styles.form,
                 marginBottom: isShowKeyboard ? 0 : 0,
+                paddingBottom: isShowKeyboard ? 32 : 78,
               }}
             >
               <View style={styles.avatar}></View>
-
+              <Image
+                source={require("../images/add.png")}
+                style={styles.addImg}
+              />
               <Text style={styles.title}>Реєстрація</Text>
               <View>
                 <TextInput
-                  style={styles.input}
-                  onFocus={() => setIsShowKeyboard(true)}
+                  style={{
+                    ...styles.input,
+                    borderColor: isOnFocusLogin ? "#FF6C00" : "#E8E8E8",
+                    backgroundColor: isOnFocusLogin ? "#FFFFFF" : "#F6F6F6",
+                    color: isOnFocusLogin ? "#212121" : "#BDBDBD",
+                  }}
+                  onFocus={() => {
+                    setIsShowKeyboard(true);
+                    setIsOnFocusLogin(true);
+                  }}
+                  onBlur={() => setIsOnFocusLogin(false)}
                   placeholder={"Логін"}
                   placeholderTextColor={"#BDBDBD"}
                 />
               </View>
               <View>
                 <TextInput
-                  style={styles.input}
+                  style={{
+                    ...styles.input,
+                    borderColor: isOnFocusEmail ? "#FF6C00" : "#E8E8E8",
+                    backgroundColor: isOnFocusEmail ? "#FFFFFF" : "#F6F6F6",
+                    color: isOnFocusEmail ? "#212121" : "#BDBDBD",
+                  }}
                   secureTextEntry={false}
-                  onFocus={() => setIsShowKeyboard(true)}
-                  placeholder={"Електронна адреса"}
+                  onFocus={() => {
+                    setIsShowKeyboard(true);
+                    setIsOnFocusEmail(true);
+                  }}
+                  onBlur={() => setIsOnFocusEmail(false)}
+                  placeholder={"Електронна пошта"}
                   placeholderTextColor={"#BDBDBD"}
                 />
               </View>
               <View>
                 <TextInput
-                  style={styles.input}
+                  style={{
+                    ...styles.input,
+                    borderColor: isOnFocusPW ? "#FF6C00" : "#E8E8E8",
+                    backgroundColor: isOnFocusPW ? "#FFFFFF" : "#F6F6F6",
+                    color: isOnFocusPW ? "#212121" : "#BDBDBD",
+                  }}
                   secureTextEntry={true}
-                  onFocus={() => setIsShowKeyboard(true)}
+                  onFocus={() => {
+                    setIsShowKeyboard(true);
+                    setIsOnFocusPW(true);
+                  }}
+                  onBlur={() => setIsOnFocusPW(false)}
                   placeholder={"Пароль"}
                   placeholderTextColor={"#BDBDBD"}
                 />
               </View>
-              <View style={styles.regWrapper}>
+              <View
+                style={{
+                  ...styles.regWrapper,
+                  display: isShowKeyboard ? "none" : "block",
+                }}
+              >
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.btn}
@@ -74,12 +116,11 @@ export default function RegScreen() {
                 >
                   <Text style={styles.btnTitle}>Зареєструватися</Text>
                 </TouchableOpacity>
-                <View style={styles.loginWrapper}>
-                  <Text style={styles.loginText}>Вже маєте аккаунт?</Text>
-                  <Text style={styles.loginText}>Увійти</Text>
-                </View>
+                <Text style={styles.loginText}>Вже маєте аккаунт? Увійти</Text>
               </View>
-              <Text style={styles.textShow}>Показати</Text>
+              <Text style={{ ...styles.textShow, bottom: isShowKeyboard ? 64 : 239 }}>
+                Показати
+              </Text>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -109,9 +150,13 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     paddingLeft: 16,
   },
+  inputFocus: {
+    borderColor: "#FF6C00",
+  },
   form: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 25,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     justifyContent: "center",
     paddingTop: 92,
     paddingBottom: 78,
@@ -154,6 +199,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   loginText: {
+    textAlign: "center",
     color: "#1B4371",
     marginRight: 6,
     fontSize: 16,
@@ -163,15 +209,20 @@ export const styles = StyleSheet.create({
     color: "#1B4371",
     marginRight: 6,
     fontSize: 16,
-    bottom: 239,
     right: 25,
   },
-    avatar: {
-        position: "absolute",
-        top: -55,
-        right: 140,
-      backgroundColor: "#F6F6F6",
-      width: 120,
-      height: 120,
+  avatar: {
+    position: "absolute",
+    top: -55,
+    right: 140,
+    backgroundColor: "#F6F6F6",
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+  },
+  addImg: {
+    position: "absolute",
+    top: 25,
+    right: 129,
   },
 });
