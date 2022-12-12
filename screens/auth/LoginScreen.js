@@ -15,7 +15,7 @@ import {
 
 
 
-export default function LogScreen() {
+export default function LogScreen({navigation}) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isOnFocusEmail, setIsOnFocusEmail] = useState(false);
   const [isOnFocusPW, setIsOnFocusPW] = useState(false);
@@ -41,7 +41,7 @@ export default function LogScreen() {
             <View style={styles.container}>
               <ImageBackground
                 style={styles.image}
-                source={require("../images/background.jpg")}
+                source={require("../../images/background.jpg")}
               >
                 <KeyboardAvoidingView
                   behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -124,13 +124,20 @@ export default function LogScreen() {
                       <TouchableOpacity
                         activeOpacity={0.8}
                         style={styles.btn}
-                        onPress={keyboardHide}
+                        onPress={
+                          (keyboardHide, () => navigation.navigate("Home"))
+                        }
                       >
                         <Text style={styles.btnTitle}>Вхід</Text>
                       </TouchableOpacity>
-                      <Text style={styles.loginText}>
-                        Немає аккаунта? Зареєструватись
-                      </Text>
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => navigation.navigate("Registration")}
+                      >
+                        <Text style={styles.loginText}>
+                          Немає аккаунта? Зареєструватись
+                        </Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </KeyboardAvoidingView>

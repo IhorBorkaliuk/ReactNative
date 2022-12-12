@@ -9,12 +9,12 @@ import {
   Platform,
   KeyboardAvoidingView,
   Keyboard,
-    TouchableWithoutFeedback,
+  TouchableWithoutFeedback,
   Image,
 } from "react-native";
 
 
-export default function RegScreen() {
+export default function RegScreen({navigation}) {
     const [isShowKeyboard, setIsShowKeyboard] = useState(false);
     const [isOnFocusLogin, setIsOnFocusLogin] = useState(false);
     const [isOnFocusEmail, setIsOnFocusEmail] = useState(false);
@@ -45,7 +45,7 @@ export default function RegScreen() {
       <View style={styles.container}>
         <ImageBackground
           style={styles.image}
-          source={require("../images/background.jpg")}
+          source={require("../../images/background.jpg")}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -59,7 +59,7 @@ export default function RegScreen() {
             >
               <View style={styles.avatar}></View>
               <Image
-                source={require("../images/add.png")}
+                source={require("../../images/add.png")}
                 style={styles.addImg}
               />
               <Text style={styles.title}>Реєстрація</Text>
@@ -141,11 +141,18 @@ export default function RegScreen() {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.btn}
-                  onPress={keyboardHide}
+                  onPress={(keyboardHide, () => navigation.navigate("Home"))}
                 >
                   <Text style={styles.btnTitle}>Зареєструватися</Text>
                 </TouchableOpacity>
-                <Text style={styles.loginText}>Вже маєте аккаунт? Увійти</Text>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => navigation.navigate("Login")}
+                >
+                  <Text style={styles.loginText}>
+                    Вже маєте аккаунт? Увійти
+                  </Text>
+                </TouchableOpacity>
               </View>
               <Text
                 style={{
