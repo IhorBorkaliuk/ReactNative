@@ -2,7 +2,10 @@ import React from "react";
 
 import { View } from "react-native";
 import { styles } from "./screens/auth/LoginScreen";
-import { Ionicons } from '@expo/vector-icons';
+import { Button } from "react-native";
+
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -43,18 +46,34 @@ export const onRoute = (isLogedIn) => {
     <MainStack.Navigator tabBarOptions={{ showLabel: false }}>
       <MainStack.Screen
         options={{
-          tapBarIcon: ({ focused, size, color }) => (
-            <Ionicons name="grid-outline" size={size} color="color" />
+          headerShown: true,
+          tabBarIcon: ({ focused, size, color }) => (
+            <Ionicons name="grid-outline" size={size} color="#212121" />
+          ),
+          headerRight: () => (
+            <MaterialIcons name="logout" size={26} color="#BDBDBD" style={styles.icon} />
           ),
         }}
         name="Posts"
         component={PostsScreen}
       ></MainStack.Screen>
       <MainStack.Screen
+        options={{
+          headerShown: true,
+          tabBarIcon: ({ focused, size, color }) => (
+            <Ionicons name="ios-add-circle" size={36} color="#FF6C00" />
+          ),
+        }}
         name="Create"
         component={CreatePostsScreen}
       ></MainStack.Screen>
       <MainStack.Screen
+        options={{
+          headerShown: true,
+          tabBarIcon: ({ focused, size, color }) => (
+            <Ionicons name="person-outline" size={size} color="#212121" />
+          ),
+        }}
         name="Profile"
         component={ProfileScreen}
       ></MainStack.Screen>

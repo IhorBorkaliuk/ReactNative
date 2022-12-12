@@ -226,4 +226,7 @@ export const styles = StyleSheet.create({
     color: "#212121",
     marginBottom: 33,
   },
+  icon: {
+    marginRight: 15,
+  },
 });
