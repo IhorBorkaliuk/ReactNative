@@ -2,7 +2,6 @@ import React from "react";
 
 import { View } from "react-native";
 import { styles } from "./screens/auth/LoginScreen";
-import { Button } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
