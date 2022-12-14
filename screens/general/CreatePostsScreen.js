@@ -27,6 +27,14 @@ setPhoto(photo.uri);
 console.log("photo", photo);
   };
 
+useEffect(() => {
+  (async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+    }
+  })();
+}, []);
 
 
 const keyboardHide = () => {
