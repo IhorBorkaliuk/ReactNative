@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -11,7 +11,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Image,
-  Dimensions,
 } from "react-native";
 
 import { useDispatch } from "react-redux";
@@ -36,21 +35,6 @@ export default function RegScreen({navigation}) {
   }
 
   const [state, setState] = useState(initialeState)
-
-    const [dimensions, setdimensions] = useState(
-      Dimensions.get("window").width - 20 * 2
-    );
-
-    useEffect(() => {
-      const onChange = () => {
-        const width = Dimensions.get("window").width - 20 * 2;
-        setdimensions(width);
-      };
-      Dimensions.addEventListener("change", onChange);
-      return () => {
-        Dimensions.removeEventListener("change", onChange);
-      };
-    }, []);
 
 
   const handleSubmit = () => {
