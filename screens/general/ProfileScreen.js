@@ -1,5 +1,7 @@
-import { Text } from "react-native";
+import { Text, Button } from "react-native";
 
-export default function ProfileScreen() {
-  return <Text>ProfileScreen</Text>;
+export default function ProfileScreen({navigation}) {
+  return (
+    <Button title="go to map" onPress={() => navigation.navigate("Map")} />
+  );
 }

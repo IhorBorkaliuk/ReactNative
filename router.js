@@ -10,17 +10,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const AuthStack = createStackNavigator();
-const OtherStack = createStackNavigator();
 const MainStack = createBottomTabNavigator();
 
 import LogScreen from "./screens/auth/LoginScreen";
 import RegScreen from "./screens/auth/RegistrationScreen";
-import Home from "./screens/general/Home";
 import PostsScreen from "./screens/general/PostsScreen";
 import CreatePostsScreen from "./screens/general/CreatePostsScreen";
 import ProfileScreen from "./screens/general/ProfileScreen";
-import CommentsScreen from "./screens/general/CommentsScreen";
-import MapScreen from "./screens/general/MapScreen";
 
 
 
@@ -48,7 +44,7 @@ export const onRoute = (isLogedIn) => {
       <MainStack.Navigator tabBarOptions={{ showLabel: false }}>
         <MainStack.Screen
           options={{
-            headerShown: true,
+            headerShown: false,
             tabBarIcon: ({ focused, size, color }) => (
               <Ionicons name="grid-outline" size={size} color="#212121" />
             ),

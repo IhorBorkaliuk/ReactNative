@@ -1,5 +1,5 @@
 import { Text, View, Image } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Camera } from "expo-camera";
 import { EvilIcons } from "@expo/vector-icons";
 import {
@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import * as Location from 'expo-location'
 
 export default function CreatePostsScreen({navigation}) {
 
@@ -16,14 +17,16 @@ export default function CreatePostsScreen({navigation}) {
 
   const [camera, setCamera] = useState(null)
   const [photo, setPhoto] = useState(null)
-  const makePhoto = async () => {
-    const photo = await camera.takePictureAsync();
-    setPhoto(photo.uri)
-  }
 
-  const sendPhoto = () => {
+const makePhoto = async () => {
+const photo = await camera.takePictureAsync();
+const location = await Location.getCurrentPositionAsync();
+console.log("latitude", location.coords.latitude);
+console.log("longitude", location.coords.longitude);
+setPhoto(photo.uri);
+console.log("photo", photo);
+  };
 
-  }
 
 const keyboardHide = () => {
   setIsShowKeyboard(false);
@@ -78,7 +81,10 @@ const keyboardHide = () => {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.btn}
-            onPress={(keyboardHide, () => navigation.navigate("Posts", {photo}))}
+            onPress={
+              (keyboardHide,
+              () => navigation.navigate("DefaultScreenPosts", { photo }))
+            }
           >
             <Text style={styles.btnTitle}>Опублікувати</Text>
           </TouchableOpacity>
