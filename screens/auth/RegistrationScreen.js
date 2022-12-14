@@ -13,12 +13,18 @@ import {
   Image,
 } from "react-native";
 
+import { useDispatch } from "react-redux";
+
+// import { authSignOutUser } from "../../redux/auth/authOperations";
+
 
 export default function RegScreen({navigation}) {
     const [isShowKeyboard, setIsShowKeyboard] = useState(false);
     const [isOnFocusLogin, setIsOnFocusLogin] = useState(false);
     const [isOnFocusEmail, setIsOnFocusEmail] = useState(false);
     const [isOnFocusPW, setIsOnFocusPW] = useState(false);
+
+  const dispatch = useDispatch()
 
 
   
@@ -32,7 +38,7 @@ export default function RegScreen({navigation}) {
   const [state, setState] = useState(initialeState)
 
 
-  const keyboardHide = () => {
+  const handleSubmit = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     console.log(state)
@@ -41,7 +47,7 @@ export default function RegScreen({navigation}) {
 
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
+    <TouchableWithoutFeedback onPress={handleSubmit}>
       <View style={styles.container}>
         <ImageBackground
           style={styles.image}
@@ -141,7 +147,9 @@ export default function RegScreen({navigation}) {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.btn}
-                  onPress={(keyboardHide, () => navigation.navigate("Home"))}
+                  onPress={
+                    (() => navigation.navigate("DefaultScreenPosts"))
+                  }
                 >
                   <Text style={styles.btnTitle}>Зареєструватися</Text>
                 </TouchableOpacity>
@@ -170,7 +178,7 @@ export default function RegScreen({navigation}) {
   );
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",

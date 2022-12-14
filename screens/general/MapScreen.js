@@ -23,7 +23,7 @@ export default function MapScreen() {
 }
 
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",

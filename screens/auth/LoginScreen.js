@@ -29,7 +29,7 @@ export default function LogScreen({navigation}) {
 
   const [state, setState] = useState(initialeState)
 
-        const keyboardHide = () => {
+        const handleSubmit = () => {
           setIsShowKeyboard(false);
           Keyboard.dismiss();
           console.log(state)
@@ -37,7 +37,7 @@ export default function LogScreen({navigation}) {
         };
 
         return (
-          <TouchableWithoutFeedback onPress={keyboardHide}>
+          <TouchableWithoutFeedback onPress={handleSubmit}>
             <View style={styles.container}>
               <ImageBackground
                 style={styles.image}
@@ -125,7 +125,7 @@ export default function LogScreen({navigation}) {
                         activeOpacity={0.8}
                         style={styles.btn}
                         onPress={
-                          (keyboardHide, () => navigation.navigate("Home"))
+                          (handleSubmit, () => navigation.navigate("Home"))
                         }
                       >
                         <Text style={styles.btnTitle}>Вхід</Text>
@@ -147,7 +147,7 @@ export default function LogScreen({navigation}) {
         );
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",

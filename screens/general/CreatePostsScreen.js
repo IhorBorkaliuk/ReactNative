@@ -20,12 +20,13 @@ export default function CreatePostsScreen({navigation}) {
 
 const makePhoto = async () => {
 const photo = await camera.takePictureAsync();
-const location = await Location.getCurrentPositionAsync();
+  const location = await Location.getCurrentPositionAsync({});
 console.log("latitude", location.coords.latitude);
 console.log("longitude", location.coords.longitude);
 setPhoto(photo.uri);
 console.log("photo", photo);
   };
+
 
 
 const keyboardHide = () => {
@@ -82,8 +83,7 @@ const keyboardHide = () => {
             activeOpacity={0.8}
             style={styles.btn}
             onPress={
-              (keyboardHide,
-              () => navigation.navigate("DefaultScreenPosts", { photo }))
+              (() => navigation.navigate("DefaultScreenPosts", { photo }))
             }
           >
             <Text style={styles.btnTitle}>Опублікувати</Text>
@@ -94,7 +94,7 @@ const keyboardHide = () => {
   );
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",

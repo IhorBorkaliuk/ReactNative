@@ -1,7 +1,6 @@
 import React from "react";
 
-import { View } from "react-native";
-import { styles } from "./screens/auth/LoginScreen";
+import { View, StyleSheet } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -84,3 +83,11 @@ export const onRoute = (isLogedIn) => {
     </>
   );
 };
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+});
