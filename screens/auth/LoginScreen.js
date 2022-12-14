@@ -156,8 +156,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   input: {
     borderWidth: 1,

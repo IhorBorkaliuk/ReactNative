@@ -2,10 +2,15 @@ import { Text, View, Image } from "react-native";
 import { useState } from "react";
 import { Camera } from "expo-camera";
 import { EvilIcons } from "@expo/vector-icons";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+} from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 
-export default function CreatePostsScreen() {
+export default function CreatePostsScreen({navigation}) {
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
@@ -15,44 +20,72 @@ export default function CreatePostsScreen() {
     const photo = await camera.takePictureAsync();
     setPhoto(photo.uri)
   }
+
+  const sendPhoto = () => {
+
+  }
+
+const keyboardHide = () => {
+  setIsShowKeyboard(false);
+  Keyboard.dismiss();
+};
+
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
-        <Camera style={styles.camera} ref={setCamera}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
+          <Camera style={styles.camera} ref={setCamera}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.img}
+              onPress={makePhoto}
+            >
+              <Image source={require("../../images/Photo.png")} />
+            </TouchableOpacity>
+          </Camera>
+          <Text style={styles.text}>Завантажте фото</Text>
+          <View
+            style={{
+              ...styles.form,
+              marginTop: isShowKeyboard ? 0 : 48,
+            }}
+          >
+            <TextInput
+              style={styles.input}
+              placeholder={"Назва..."}
+              onFocus={() => {
+                setIsShowKeyboard(true);
+                console.log(isShowKeyboard);
+              }}
+            />
+            <EvilIcons
+              name="location"
+              size={24}
+              color="black"
+              style={styles.icon}
+            />
+            <TextInput
+              onFocus={() => {
+                setIsShowKeyboard(true);
+                console.log(isShowKeyboard);
+              }}
+              style={styles.input}
+              placeholder={"     Місцевість..."}
+            />
+          </View>
           <TouchableOpacity
             activeOpacity={0.8}
-            style={styles.img}
-            onPress={makePhoto}
+            style={styles.btn}
+            onPress={(keyboardHide, () => navigation.navigate("Posts", {photo}))}
           >
-            <Image source={require("../../images/Photo.png")} />
+            <Text style={styles.btnTitle}>Опублікувати</Text>
           </TouchableOpacity>
-        </Camera>
-        <Text style={styles.text}>Завантажте фото</Text>
-        <View
-          style={{
-            ...styles.form,
-            marginBottom: isShowKeyboard ? 0 : 48,
-          }}
-        >
-          <TextInput
-            style={styles.input}
-            placeholder={"Назва..."}
-            onFocus={() => {
-              setIsShowKeyboard(true);
-            }}
-          />
-          <EvilIcons
-            name="location"
-            size={24}
-            color="black"
-            style={styles.icon}
-          />
-          <TextInput style={styles.input} placeholder={"     Місцевість..."} />
-        </View>
+        </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
   );
-
 }
 
 export const styles = StyleSheet.create({
@@ -84,6 +117,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Roboto-Bold",
   },
   form: {
+    marginTop: 48,
     marginHorizontal: 16,
   },
   icon: {
@@ -91,5 +125,18 @@ export const styles = StyleSheet.create({
     top: 97,
     left: -7,
     color: "#BDBDBD",
+  },
+  btnTitle: {
+    color: "#FFFFFF",
+    fontFamily: "Roboto-Bold",
+    fontSize: 16,
+  },
+  btn: {
+    backgroundColor: "#BDBDBD",
+    alignItems: "center",
+    height: 51,
+    justifyContent: "center",
+    borderRadius: 100,
+    marginHorizontal: 16,
   },
 });
