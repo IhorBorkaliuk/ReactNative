@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,11 +11,11 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Image,
+  Dimensions,
 } from "react-native";
 
 import { useDispatch } from "react-redux";
-
-// import { authSignOutUser } from "../../redux/auth/authOperations";
+import { authSignUpUser } from "../../redux/auth/authOperations";
 
 
 export default function RegScreen({navigation}) {
@@ -37,11 +37,27 @@ export default function RegScreen({navigation}) {
 
   const [state, setState] = useState(initialeState)
 
+    const [dimensions, setdimensions] = useState(
+      Dimensions.get("window").width - 20 * 2
+    );
+
+    useEffect(() => {
+      const onChange = () => {
+        const width = Dimensions.get("window").width - 20 * 2;
+        setdimensions(width);
+      };
+      Dimensions.addEventListener("change", onChange);
+      return () => {
+        Dimensions.removeEventListener("change", onChange);
+      };
+    }, []);
+
 
   const handleSubmit = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     console.log(state)
+    dispatch(authSignUpUser(state));
     setState(initialeState)
     };
 
@@ -147,9 +163,7 @@ export default function RegScreen({navigation}) {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.btn}
-                  onPress={
-                    (() => navigation.navigate("DefaultScreenPosts"))
-                  }
+                  onPress={handleSubmit}
                 >
                   <Text style={styles.btnTitle}>Зареєструватися</Text>
                 </TouchableOpacity>

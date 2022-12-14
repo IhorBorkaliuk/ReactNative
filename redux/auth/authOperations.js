@@ -1,13 +1,15 @@
-import db from "../../firebase/config";
+import { app } from "../../firebase/config";
 
 export const authSignUpUser =
-  ({ email, password, nickname }) =>
+  ({ email, password, login }) =>
   async (dispatch, getSatte) => {
-    console.log("email, password, nickname", email, password, nickname);
+    console.log("email, password, login", email, password, login);
     try {
-      const user = await db
+        const user = await app
+          
         .auth()
         .createUserWithEmailAndPassword(email, password);
+        console.log(app);
       console.log("user", user);
     } catch (error) {
       console.log("error", error);
