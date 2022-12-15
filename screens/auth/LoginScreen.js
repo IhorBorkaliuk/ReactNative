@@ -12,6 +12,9 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
+import { auth } from "../../firebase/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 
 
 
@@ -29,15 +32,25 @@ export default function LogScreen({navigation}) {
 
   const [state, setState] = useState(initialeState)
 
-        const handleSubmit = () => {
+        const handleSubmitLogIn = () => {
           setIsShowKeyboard(false);
           Keyboard.dismiss();
           console.log(state)
+    signInWithEmailAndPassword(auth, state.email, state.password)
+      .then((res) => {
+        console.log(res.user);
+      })
+      .catch((err) => console.log(err));
+
           setState(initialeState);
-        };
+  };
+  
+    const hideKeyboard = () => {
+      setIsShowKeyboard(false);
+    };
 
         return (
-          <TouchableWithoutFeedback onPress={handleSubmit}>
+          <TouchableWithoutFeedback onPress={hideKeyboard}>
             <View style={styles.container}>
               <ImageBackground
                 style={styles.image}
@@ -124,9 +137,7 @@ export default function LogScreen({navigation}) {
                       <TouchableOpacity
                         activeOpacity={0.8}
                         style={styles.btn}
-                        onPress={
-                          (handleSubmit, () => navigation.navigate("Home"))
-                        }
+                        onPress={handleSubmitLogIn}
                       >
                         <Text style={styles.btnTitle}>Вхід</Text>
                       </TouchableOpacity>

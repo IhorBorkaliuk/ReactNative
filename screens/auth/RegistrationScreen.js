@@ -13,8 +13,8 @@ import {
   Image,
 } from "react-native";
 
-import { useDispatch } from "react-redux";
-import { authSignUpUser } from "../../redux/auth/authOperations";
+import { auth } from "../../firebase/config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 
 export default function RegScreen({navigation}) {
@@ -23,7 +23,6 @@ export default function RegScreen({navigation}) {
     const [isOnFocusEmail, setIsOnFocusEmail] = useState(false);
     const [isOnFocusPW, setIsOnFocusPW] = useState(false);
 
-  const dispatch = useDispatch()
 
 
   
@@ -37,17 +36,26 @@ export default function RegScreen({navigation}) {
   const [state, setState] = useState(initialeState)
 
 
-  const handleSubmit = () => {
+  const handleSubmitReg = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     console.log(state)
-    dispatch(authSignUpUser(state));
+
+    createUserWithEmailAndPassword(auth,state.login, state.email, state.password)
+      .then((res) => {
+        console.log(res.user);
+      })
+      .catch((err) => console.log(err));
     setState(initialeState)
-    };
+  };
+  
+  const hideKeyboard = () => {
+    setIsShowKeyboard(false)
+  }
 
 
   return (
-    <TouchableWithoutFeedback onPress={handleSubmit}>
+    <TouchableWithoutFeedback onPress={hideKeyboard}>
       <View style={styles.container}>
         <ImageBackground
           style={styles.image}
@@ -147,7 +155,7 @@ export default function RegScreen({navigation}) {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.btn}
-                  onPress={handleSubmit}
+                  onPress={handleSubmitReg}
                 >
                   <Text style={styles.btnTitle}>Зареєструватися</Text>
                 </TouchableOpacity>

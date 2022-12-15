@@ -1,16 +1,11 @@
-import { app } from "../../firebase/config";
+import { initializeApp } from "firebase/app";
+import "firebase/auth";
 
 export const authSignUpUser =
   ({ email, password, login }) =>
   async (dispatch, getSatte) => {
-    console.log("email, password, login", email, password, login);
     try {
-        const user = await app
-          
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-        console.log(app);
-      console.log("user", user);
+      await createUserWithEmailAndPassword(email, password, login);
     } catch (error) {
       console.log("error", error);
       console.log("error.message", error.message);
