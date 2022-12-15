@@ -13,6 +13,9 @@ import {
   Image,
 } from "react-native";
 
+import { authSlice } from "../../redux/auth/authReducer";
+import { useDispatch } from "react-redux";
+
 import { auth } from "../../firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -23,7 +26,7 @@ export default function RegScreen({navigation}) {
     const [isOnFocusEmail, setIsOnFocusEmail] = useState(false);
     const [isOnFocusPW, setIsOnFocusPW] = useState(false);
 
-
+  const dispatch = useDispatch();
 
   
   const initialeState = {
@@ -41,9 +44,10 @@ export default function RegScreen({navigation}) {
     Keyboard.dismiss();
     console.log(state)
 
-    createUserWithEmailAndPassword(auth,state.login, state.email, state.password)
+    createUserWithEmailAndPassword(auth, state.email, state.password)
       .then((res) => {
         console.log(res.user);
+        dispatch(authSlice.actions.updateUserProfile({ userID: res.user.uid }));
       })
       .catch((err) => console.log(err));
     setState(initialeState)
