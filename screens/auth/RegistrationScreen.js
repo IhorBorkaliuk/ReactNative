@@ -13,11 +13,9 @@ import {
   Image,
 } from "react-native";
 
-import { authSlice } from "../../redux/auth/authReducer";
 import { useDispatch } from "react-redux";
+import { authSignUpUser } from "../../redux/auth/authOperations";
 
-import { auth } from "../../firebase/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 
 
 export default function RegScreen({navigation}) {
@@ -43,13 +41,7 @@ export default function RegScreen({navigation}) {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     console.log(state)
-
-    createUserWithEmailAndPassword(auth, state.email, state.password)
-      .then((res) => {
-        console.log(res.user);
-        dispatch(authSlice.actions.updateUserProfile({ userID: res.user.uid }));
-      })
-      .catch((err) => console.log(err));
+    dispatch(authSignUpUser(state));
     setState(initialeState)
   };
   
