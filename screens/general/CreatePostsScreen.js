@@ -1,4 +1,3 @@
-import { Text, View, Image } from "react-native";
 import { useState, useEffect } from "react";
 import { Camera } from "expo-camera";
 import { EvilIcons } from "@expo/vector-icons";
@@ -7,31 +6,40 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  Text,
+  View,
+  Image,
 } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import * as Location from "expo-location";
 import { uuidv4 } from "@firebase/util";
-import { storage } from "../../firebase/config";
+import { storage, db } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useSelector } from "react-redux";
+import { collection, addDoc } from "firebase/firestore";
+import { Firestore } from "firebase/firestore";
 
 export default function CreatePostsScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-
+  const [comment, setComment] = useState("");
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
+  const [location, setLocation] = useState(null);
+
+  const { userId, login } = useSelector((state) => state.auth);
 
   const makePhoto = async () => {
     const photo = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync({});
-    console.log("latitude", location.coords.latitude);
-    console.log("longitude", location.coords.longitude);
+    console.log(comment);
+    console.log(location);
     setPhoto(photo.uri);
     console.log("photo", photo);
   };
 
   const sendPhoto = () => {
-    uploadPhotoToServer();
-    navigation.navigate("DefaultScreenPosts");
+    uploadPostToServer();
+    navigation.navigate("DefaultScreenPosts", {photo});
   };
 
   const uploadPhotoToServer = async () => {
@@ -40,31 +48,36 @@ export default function CreatePostsScreen({ navigation }) {
     const photoId = uuidv4();
     console.log("photoId:", photoId); //!
     const storageRef = ref(storage, `postImage/${photoId}`);
-    // console.log("storageRef:", storageRef); //!
     await uploadBytes(storageRef, file);
 
-    //! FirebaseError: Firebase Storage: User does not have permission to access 'postImage/f0c83595-27ef-4814-bcb9-e4571c070400'. (storage/unauthorized)
-    // service firebase.storage {
-    //   match / b / { bucket } / o {
-    //     match / { allPaths=**} {
-    //   allow read, write; //! Заменить на ЭТО
-    //     }
-    //   }
-    // }
 
     const photoUrl = await getDownloadURL(ref(storage, `postImage/${photoId}`));
     console.log("photoUrl:", photoUrl); //!
     return photoUrl;
   };
 
+    const uploadPostToServer = async () => {
+      const photo = await uploadPhotoToServer();
+      console.log(location);
+
+      try {
+        const docRef = await addDoc(collection(db, "posts"), {
+          userId, login, location, photo
+        });
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    };
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      console.log("status", status); 
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
+        console.log("Permission to access location was denied");
       }
+      let locationRes = await Location.getCurrentPositionAsync();
+      setLocation(locationRes);
     })();
   }, []);
 
@@ -92,9 +105,12 @@ export default function CreatePostsScreen({ navigation }) {
           <View
             style={{
               ...styles.form,
-              marginTop: isShowKeyboard ? 0 : 48,
+              marginTop: isShowKeyboard ? 0 : 20,
             }}
           >
+            <View>
+              <TextInput style={styles.input} onChangeText={setComment} />
+            </View>
             <TextInput
               style={styles.input}
               placeholder={"Назва..."}
@@ -160,12 +176,11 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Bold",
   },
   form: {
-    marginTop: 48,
     marginHorizontal: 16,
   },
   icon: {
     position: "absolute",
-    top: 97,
+    top: 178,
     left: -7,
     color: "#BDBDBD",
   },
