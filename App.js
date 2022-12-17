@@ -1,13 +1,9 @@
 import { useState } from 'react';
-
 import * as Font from "expo-font";
 import AppLoading from 'expo-app-loading';
-import { NavigationContainer } from '@react-navigation/native';
-
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-
-import { onRoute } from './router';
+import Main from './components/main';
 
 const loadFonts = async () => {
   await Font.loadAsync({
@@ -20,7 +16,7 @@ const loadFonts = async () => {
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
-  const routing = onRoute(false);
+
 if (!isReady) {
   return (
     <AppLoading
@@ -32,7 +28,7 @@ if (!isReady) {
 }
   return (
     <Provider store={store}>
-      <NavigationContainer>{routing}</NavigationContainer>
+      <Main/>
     </Provider>
   );
 }
