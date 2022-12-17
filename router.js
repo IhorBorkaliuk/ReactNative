@@ -3,7 +3,6 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -46,14 +45,6 @@ export const onRoute = (isLogedIn) => {
             headerShown: false,
             tabBarIcon: ({ focused, size, color }) => (
               <Ionicons name="grid-outline" size={size} color="#212121" />
-            ),
-            headerRight: () => (
-              <MaterialIcons
-                name="logout"
-                size={26}
-                color="#BDBDBD"
-                style={styles.icon}
-              />
             ),
           }}
           name="Posts"

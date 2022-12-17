@@ -12,8 +12,8 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import { auth } from "../../firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../../redux/auth/authOperations";
 
 
 
@@ -23,7 +23,7 @@ export default function LogScreen({navigation}) {
   const [isOnFocusEmail, setIsOnFocusEmail] = useState(false);
   const [isOnFocusPW, setIsOnFocusPW] = useState(false);
 
-  
+    const dispatch = useDispatch();
   
   const initialeState = {
     email: '',
@@ -32,17 +32,12 @@ export default function LogScreen({navigation}) {
 
   const [state, setState] = useState(initialeState)
 
-        const handleSubmitLogIn = () => {
-          setIsShowKeyboard(false);
-          Keyboard.dismiss();
-          console.log(state)
-    signInWithEmailAndPassword(auth, state.email, state.password)
-      .then((res) => {
-        console.log(res.user);
-      })
-      .catch((err) => console.log(err));
-
-          setState(initialeState);
+    const handleSubmitLogIn = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    console.log(state);
+    dispatch(authSignInUser(state));
+    setState(initialeState);
   };
   
     const hideKeyboard = () => {

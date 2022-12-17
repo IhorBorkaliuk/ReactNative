@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList, Image, Button } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 
 export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   console.log("route.params", route.params);
+
+
+
 
   useEffect(() => {
     if (route.params) {
@@ -26,7 +31,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
           >
             <Image
               source={{ uri: item.photo }}
-              style={{ width: 350, height: 200 }}
+              style={{ width: 350, height: 200, marginTop: 10 }}
             />
           </View>
         )}

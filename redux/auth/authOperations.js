@@ -1,7 +1,8 @@
 import "firebase/auth";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/config";
-import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
+import { getAuth, updateProfile, onAuthStateChanged, signOut } from "firebase/auth";
+import { authSlice } from "./authReducer";
 
 
 export const authSignUpUser =
@@ -24,31 +25,48 @@ export const authSignUpUser =
     }
   };
 
-export const authSignInUser = () => async () => {
+export const authSignInUser =
+  ({ email, password }) =>
+  async () => {
+    try {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      console.log("user", user);
+    } catch (error) {
+      console.log("error", error);
+      console.log("error.message", error.message);
+    }
+  };
+
+export const authStateChangeUser = () => async (dispatch, getState) => {
   try {
-    const user = await signInWithEmailAndPassword(auth, email, password);
-    console.log("user", user);
+    onAuthStateChanged(auth, (user) => { 
+      if (user) {
+        dispatch(
+          authSlice.actions.updateUserProfile({
+            userId: user.uid,
+            login: user.displayName,
+          })
+        );
+
+        dispatch(authSlice.actions.authStateChange({ stateChange: true }));
+      }
+    });
   } catch (error) {
-    console.log("error", error);
-    console.log("error.message", error.message);
+    Alert.alert(error.message);
+    console.log("error:", error);
+    console.log("error.code:", error.code);
+    console.log("error.message:", error.message);
   }
 };
 
-export const authStateChangeUser = () => {
-      const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-dispatch(
-  authSlice.actions.updateUserProfile({
-    userId: user.uid,
-    login: user.displayName,
-  })
-);
 
-dispatch(authSlice.actions.stateChange({ stateChange: true }));
-    }
-  });
-}
-
-
-export const authSignOutUser = () => async (dispatch, getSatte) => {};
+export const authSignOutUser = () => async (dispatch, getSatte) => {
+  try {
+    await signOut(auth);
+    dispatch(authSlice.actions.authSignOut());
+  } catch (error) {
+    console.log("error:", error);
+    console.log("error.code:", error.code);
+    console.log("error.message:", error.message);
+  }
+};
