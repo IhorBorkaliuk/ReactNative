@@ -10,10 +10,7 @@ import {
 } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import * as Location from "expo-location";
-import { uuidv4 } from "@firebase/util";
-import { storage } from "../../firebase/config";
 import { db } from "../../firebase/config";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function CreatePostsScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -23,9 +20,9 @@ export default function CreatePostsScreen({ navigation }) {
 
   const makePhoto = async () => {
     const photo = await camera.takePictureAsync();
-    // const location = await Location.getCurrentPositionAsync({});
-    // console.log("latitude", location.coords.latitude);
-    // console.log("longitude", location.coords.longitude);
+    const location = await Location.getCurrentPositionAsync({});
+    console.log("latitude", location.coords.latitude);
+    console.log("longitude", location.coords.longitude);
     setPhoto(photo.uri);
     console.log("photo", photo);
   };
@@ -35,24 +32,28 @@ export default function CreatePostsScreen({ navigation }) {
     navigation.navigate("DefaultScreenPosts", { photo });
   };
 
-const uploadPhotoToServer = async () => {
+  const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
+
     const file = await response.blob();
-    const photoId = uuidv4();
-    console.log("photoId:", photoId); //!
-    const storageRef = ref(storage, `postImage/${photoId}`);
-    await uploadBytes(storageRef, file);
 
+    const uniquePostId = Date.now().toString();
 
-    const photoUrl = await getDownloadURL(ref(storage, `postImage/${photoId}`));
-    console.log("photoUrl:", photoUrl); //!
-    return photoUrl;
+    await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+
+    const processedPhoto = await db
+      .storage()
+      .ref("postImage")
+      .child(uniquePostId)
+      .getDownloadURL();
+
+    return processedPhoto;
   };
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      console.log("status", status); //!
+      console.log("status", status); 
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
