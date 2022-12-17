@@ -10,7 +10,9 @@ import {
 } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import * as Location from "expo-location";
-import { db } from "../../firebase/config";
+import { uuidv4 } from "@firebase/util";
+import { storage } from "../../firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export default function CreatePostsScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -29,25 +31,30 @@ export default function CreatePostsScreen({ navigation }) {
 
   const sendPhoto = () => {
     uploadPhotoToServer();
-    navigation.navigate("DefaultScreenPosts", { photo });
+    navigation.navigate("DefaultScreenPosts");
   };
 
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
-
     const file = await response.blob();
+    const photoId = uuidv4();
+    console.log("photoId:", photoId); //!
+    const storageRef = ref(storage, `postImage/${photoId}`);
+    // console.log("storageRef:", storageRef); //!
+    await uploadBytes(storageRef, file);
 
-    const uniquePostId = Date.now().toString();
+    //! FirebaseError: Firebase Storage: User does not have permission to access 'postImage/f0c83595-27ef-4814-bcb9-e4571c070400'. (storage/unauthorized)
+    // service firebase.storage {
+    //   match / b / { bucket } / o {
+    //     match / { allPaths=**} {
+    //   allow read, write; //! Заменить на ЭТО
+    //     }
+    //   }
+    // }
 
-    await db.storage().ref(`postImage/${uniquePostId}`).put(file);
-
-    const processedPhoto = await db
-      .storage()
-      .ref("postImage")
-      .child(uniquePostId)
-      .getDownloadURL();
-
-    return processedPhoto;
+    const photoUrl = await getDownloadURL(ref(storage, `postImage/${photoId}`));
+    console.log("photoUrl:", photoUrl); //!
+    return photoUrl;
   };
 
   useEffect(() => {
