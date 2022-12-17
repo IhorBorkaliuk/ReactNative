@@ -41,17 +41,8 @@ const uploadPhotoToServer = async () => {
     const photoId = uuidv4();
     console.log("photoId:", photoId); //!
     const storageRef = ref(storage, `postImage/${photoId}`);
-    // console.log("storageRef:", storageRef); //!
     await uploadBytes(storageRef, file);
 
-    //! FirebaseError: Firebase Storage: User does not have permission to access 'postImage/f0c83595-27ef-4814-bcb9-e4571c070400'. (storage/unauthorized)
-    // service firebase.storage {
-    //   match / b / { bucket } / o {
-    //     match / { allPaths=**} {
-    //   allow read, write; //! Заменить на ЭТО
-    //     }
-    //   }
-    // }
 
     const photoUrl = await getDownloadURL(ref(storage, `postImage/${photoId}`));
     console.log("photoUrl:", photoUrl); //!
