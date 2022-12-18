@@ -62,7 +62,7 @@ export default function CreatePostsScreen({ navigation }) {
 
       try {
         const docRef = await addDoc(collection(db, "posts"), {
-          userId, login, location, photo
+          userId, login, location, photo, comment
         });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
